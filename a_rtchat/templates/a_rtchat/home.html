@@ -13,6 +13,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+
         }
 
         header {
@@ -153,6 +154,33 @@
         .content h1{
             text-align: center;
         }
+        .messages-parent{
+            display: flex;
+            flex-direction: column;
+            background-color: #444;
+            height: 70vh;
+            width: 50vw;
+
+            padding: 20px;
+
+            position: absolute;
+            left: 25%;
+
+            gap: 10px;
+
+            overflow-y: auto;
+        }
+        .same-user{
+            text-align: end;
+            padding-right:20px ;
+            background-color: springgreen;
+            height: 150px;
+        }
+        .different-user{
+            padding-left: 20px;
+            background-color: red;   
+            height: 150px;
+        }
 
     </style>
 </head>
@@ -160,7 +188,7 @@
 <body>
 
     <header>
-        <h1>{{meow}}</h1>
+        <h1>All Chats</h1>
         <nav>
             <a href="/home">Home</a>
             <a href="/signout">Logout</a>
@@ -172,70 +200,35 @@
         <div class="content">
             <section id="all-posts">
                 <h1>All Posts</h1>
-                    {% for post in chat_messages %}
-                    {{post.author.username}}
-                    {{post.body}}
-
+                <div class="messages-parent">
+                    {% for post in chat_messages reversed %}
+                        {% if post.author == user %}
+                            <div class="same-user">
+                                <h2>{{post.author.username}}</h2>
+                                <p>{{post.body}}</p>
+                            </div>
+                        {% else %}
+                            <div class="different-user">
+                                <h2>{{post.author.username}}</h2>
+                                <p>{{post.body}}</p>
+                            </div>
+                        {% endif %}
                     {% endfor %}
+                </div>
             </section>
         </div>
+
+        <form action="/home" method="POST">
+            {% csrf_token %}
+            {{form}}
+
+        </form>
     </main>
-
-    <!-- Floating Button -->
-    <div class="floating-btn" id="openModal">+</div>
-
-    <!-- Modal for Post Form -->
-    <div class="modal" id="postModal">
-        <div class="modal-content">
-            <h2>Make a Post</h2>
-            <form method="post">
-                {% csrf_token %}
-                <div>
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" required>
-                </div>
-                <div>
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" required></textarea>
-                </div>
-                <div>
-                    <label for="subject">Subject:</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                <div>
-                    <label for="teacher">Select Teacher:</label>
-                    <select id="teacher" name="teacher" required>
-                        <option value="" disabled selected>Select a teacher</option>
-                        {% for teacher in teachers %}
-                        <option value="{{ teacher.id }}">{{ teacher.first_name }} {{ teacher.last_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="button_cls">
-                    <button type="submit">Add Post</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <footer>
         <p>&copy; 2024 PulseLink | All Rights Reserved</p>
     </footer>
 
-    <script>
-        const openModalBtn = document.getElementById('openModal');
-        const postModal = document.getElementById('postModal');
-
-        openModalBtn.addEventListener('click', () => {
-            postModal.classList.toggle('active');
-        });
-
-        postModal.addEventListener('click', (event) => {
-            if (event.target === postModal) {
-                postModal.classList.remove('active');
-            }
-        });
-    </script>
 
 </body>
 

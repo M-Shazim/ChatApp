@@ -3,6 +3,8 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
+from .forms import *
+
 # Create your views here.
 
 def index(request):
@@ -54,8 +56,19 @@ def signup(request):
 def home(request):
     chat_group = get_object_or_404(ChatGroup, group_name="public_chat")
     chat_messages = chat_group.chat_messages.all()[:30]
-    ilfaaz = "Hello world"
+    
+    form = ChatMessagesCreateForm()
+    
+    if request.method == "POST":
+        form =  ChatMessagesCreateForm(request.POST)
+        if form.is_valid:
+            message = form.save(commit=False)
+            message.author = request.user
+            message.group = chat_group
+            message.save()
+            redirect('home') 
+    
     return render(request ,"a_rtchat/home.html", {
-        "meow" : ilfaaz,
         'chat_messages' : chat_messages,
+        'form' : form,
     })
