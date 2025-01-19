@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: springgreen;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 320px;
+            text-align: center;
+        }
+
+        .form-card h3 {
+            margin-bottom: 20px;
+            color: darkgreen;
+        }
+
+        .form-card input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-card button {
+            background-color: darkgreen;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .form-card button:hover {
+            background-color: forestgreen;
+        }
+
+        .form-card p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-card a {
+            color: darkgreen;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .form-card a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h3>Welcome to SignUp Page</h3>
+        <form id="signupForm" action="/signup" method="post">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Create a username" required>
+
+            <label for="firstName">FirstName</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Enter your FirstName" required>
+
+            <label for="lastName">LastName</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Enter your lastName" required>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your Email" required>
+            <p id="emailError" class="error-message">Email must be from the cuivehari.edu.pk domain.</p>
+            
+            <label for="pass1">Password</label>
+            <input type="password" id="pass1" name="pass1" placeholder="Create a password" required>
+            
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'signin' %}">Sign In</a></p>
+    </div>
+
+    <script>
+        const form = document.getElementById("signupForm");
+        const emailInput = document.getElementById("email");
+        const emailError = document.getElementById("emailError");
+
+        document.getElementById("email").addEventListener("blur", () => {
+            const email = emailInput.value;
+            
+            if (email.includes("@cuivehari.edu.pk")) {
+                emailError.style.display = "none"; 
+
+                console.log("Email is from cuivehari.edu.pk domain");
+            } else {
+                emailError.style.display = "block"; 
+                console.log("Email is from a different domain");
+            }
+        });
+
+        form.addEventListener("submit", (event) => {
+            const email = emailInput.value;
+
+            if (!email.includes("@cuivehari.edu.pk")) {
+                event.preventDefault(); // Prevent form submission
+                emailError.style.display = "block"; // Show error message
+            } else {
+                emailError.style.display = "none"; // Hide error message
+                console.log("Form submitted successfully!");
+            }
+        });
+    </script>
+    
+</body>
+</html>

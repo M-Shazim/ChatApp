@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: springgreen;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: flex-start;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: bisque;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: 0.3s ease-in-out;
+        }
+
+        .sidebar a:hover {
+            background-color: salmon;
+        }
+
+        .sidebar details {
+            margin-bottom: 20px;
+            border: 2px solid salmon;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .sidebar details ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .sidebar details li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar details a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+            display: block;
+            background-color: #fff;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .sidebar details a:hover {
+            background-color: salmon;
+        }
+
+
+        .sidebar .about-us {
+            margin-top: auto;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        main {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        main h2 {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        main p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .cta-buttons button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: rgb(255, 255, 255);
+            background-color: springgreen;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .cta-buttons button:hover {
+            background-color: #5cbf2b;
+        }
+
+        footer {
+            background-color: #fff;
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            color: #333;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    {{succes_error_messages}}
+
+    <div class="sidebar">
+        <details style="cursor:pointer;">
+            <summary>Account</summary>
+            <ul>
+                <li><a href="{% url 'signup' %}">SignUp</a></li>
+                <li><a href="{% url 'signin' %}">SignIn</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </details>
+
+        <!-- <div class="about-us">
+            <h4>About Us</h4>
+            <p>PulseLink is a platform that enables students to share faculty feedback anonymously, promoting open
+                communication and helping improve the educational experience for everyone.</p>
+        </div> -->
+    </div>
+
+    <main>
+        <h2>Welcome to PulseChat</h2>
+        <p>Chat with your loved ones.</p>
+
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 PulseChat. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>
