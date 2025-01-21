@@ -196,6 +196,7 @@
     </header>
 
     <main>
+        <h3>{{chat_messages.group.group_name}}</h3>
         <!-- For Showing Uploaded Posts -->
         <div class="content">
             <section id="all-posts">
@@ -229,6 +230,13 @@
         <p>&copy; 2024 PulseLink | All Rights Reserved</p>
     </footer>
 
+    <script>
+        const socketURL = `ws://${window.location.host}/ws/messages/public_chat/`;
+
+        console.log("Establishing socket connection");
+        const socket = new WebSocket(socketURL);
+
+    </script>
 
 </body>
 
