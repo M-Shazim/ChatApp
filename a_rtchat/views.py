@@ -71,6 +71,6 @@ def home(request):
     return render(request ,"a_rtchat/home.html", {
         'chat_messages' : chat_messages,
         "group_name" : chat_group.group_name,
-        "username" : request.user,
+        "username" : request.user.username,
         'form' : form,
     })

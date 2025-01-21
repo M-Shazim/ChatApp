@@ -202,11 +202,11 @@
         <div class="content">
             <section id="all-posts">
                 <h1>All Posts</h1>
-                <div class="messages-parent">
+                <div class="messages-parent" id="chat-container"> 
                     {% for post in chat_messages reversed %}
 
                         {% if post.author == user %}
-                            <div class="same-user">
+                            <div class="same-user" id="same-user">
                                 <h2>{{post.author.username}}</h2>
                                 <p>{{post.body}}</p>
                             </div>
@@ -246,14 +246,46 @@
             event.preventDefault()
 
             let messeage_sent = document.getElementById("chat-body").value;
-            socket.send(
-                JSON.stringify({
-                    message:messeage_sent,
-                    room_name:"{{group_name}}",
-                    sender: "{{username}}",
-                })
-            )
+            const dataToSend = {
+                message: messeage_sent,
+                room_name: "{{ group_name }}",
+                sender: "{{ username }}"
+            };
+            console.log("Data to send via WebSocket:", dataToSend);
+            socket.send(JSON.stringify(dataToSend));
         })
+
+        const chat_cont = document.getElementById("chat-container");
+
+
+        const scrollToBottom = () =>{
+            chat_cont.scrollTop = chat_cont.scrollHeight
+        } 
+
+        socket.addEventListener("message", (e)=>{
+            const data = JSON.parse(e.data)["message"]
+            console.log(data)
+            let sender = data["sender"]
+            let content = data["message"]
+
+            if(sender=="{{username}}"){
+                chat_cont.innerHTML += `<div class="same-user" id="same-user">
+                                <h2>${sender}</h2>
+                                <p>${content}</p>
+                            </div>`;
+            }
+            else{
+                chat_cont.innerHTML += `<div class="different-user" id="same-user">
+                    <h2>${sender}</h2>
+                    <p>${content}</p>
+                </div>`;
+            }
+            scrollToBottom();
+        })
+
+
+
+
 
     </script>
 
