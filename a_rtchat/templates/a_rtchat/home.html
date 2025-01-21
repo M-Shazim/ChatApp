@@ -188,7 +188,9 @@
 <body>
 
     <header>
-        <h1>All Chats</h1>
+        <h1>{{group_name}}</h1>
+        <h3></h3>
+
         <nav>
             <a href="/home">Home</a>
             <a href="/signout">Logout</a>
@@ -196,13 +198,13 @@
     </header>
 
     <main>
-        <h3>{{chat_messages.group.group_name}}</h3>
         <!-- For Showing Uploaded Posts -->
         <div class="content">
             <section id="all-posts">
                 <h1>All Posts</h1>
                 <div class="messages-parent">
                     {% for post in chat_messages reversed %}
+
                         {% if post.author == user %}
                             <div class="same-user">
                                 <h2>{{post.author.username}}</h2>
@@ -219,10 +221,13 @@
             </section>
         </div>
 
-        <form action="/home" method="POST">
+        <form action="/home" id="msg-form" method="POST">
             {% csrf_token %}
             {{form}}
 
+            <button type="submit" id="chat-submit" class="btn btn-primary">
+                Send
+            </button>
         </form>
     </main>
 
@@ -231,10 +236,24 @@
     </footer>
 
     <script>
-        const socketURL = `ws://${window.location.host}/ws/messages/public_chat/`;
+        const socketURL = `ws://${window.location.host}/ws/messages/{{group_name}}/`;
 
         console.log("Establishing socket connection");
         const socket = new WebSocket(socketURL);
+
+        const message_form = document.getElementById("msg-form")
+        message_form.addEventListener("submit", function (event){
+            event.preventDefault()
+
+            let messeage_sent = document.getElementById("chat-body").value;
+            socket.send(
+                JSON.stringify({
+                    message:messeage_sent,
+                    room_name:"{{group_name}}",
+                    sender: "{{username}}",
+                })
+            )
+        })
 
     </script>
 
