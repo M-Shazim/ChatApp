@@ -76,14 +76,14 @@
 
         <nav>
             <a href="/home">Home</a>
-            <a href="/all_groups">Groups</a>
+            <a href="/chat">Groups</a>
             <a href="/signout">Logout</a>
         </nav>
     </header>
 
     <div class="all-users">
-        {% for userr in all_users %}
-            <a href="{% url 'private_chat' request.user.username userr.username %}" class="each-user">{{ userr.username }}</a>
+        {% for group in all_groups %}
+            <a href="{% url "group_chat" group.group_name%}" class="each-user">{{ group }}</a>
         {% endfor %}
     </div>
     

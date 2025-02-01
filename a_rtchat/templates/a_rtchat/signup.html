@@ -83,12 +83,6 @@
             {% csrf_token %}
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="Create a username" required>
-
-            <label for="firstName">FirstName</label>
-            <input type="text" id="firstName" name="firstName" placeholder="Enter your FirstName" required>
-
-            <label for="lastName">LastName</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Enter your lastName" required>
             
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Enter your Email" required>
@@ -101,37 +95,6 @@
         </form>
         <p>Already have an account? <a href="{% url 'signin' %}">Sign In</a></p>
     </div>
-
-    <script>
-        const form = document.getElementById("signupForm");
-        const emailInput = document.getElementById("email");
-        const emailError = document.getElementById("emailError");
-
-        document.getElementById("email").addEventListener("blur", () => {
-            const email = emailInput.value;
-            
-            if (email.includes("@cuivehari.edu.pk")) {
-                emailError.style.display = "none"; 
-
-                console.log("Email is from cuivehari.edu.pk domain");
-            } else {
-                emailError.style.display = "block"; 
-                console.log("Email is from a different domain");
-            }
-        });
-
-        form.addEventListener("submit", (event) => {
-            const email = emailInput.value;
-
-            if (!email.includes("@cuivehari.edu.pk")) {
-                event.preventDefault(); // Prevent form submission
-                emailError.style.display = "block"; // Show error message
-            } else {
-                emailError.style.display = "none"; // Hide error message
-                console.log("Form submitted successfully!");
-            }
-        });
-    </script>
     
 </body>
 </html>

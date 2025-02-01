@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+
+        }
+
+        header {
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            background-color: #16a085;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #666;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 50%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            background-color: #444;
+            color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .floating-btn:hover {
+            background-color: #666;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .modal-content form div {
+            margin-bottom: 10px;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select,
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #444;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+
+        .modal-content button {
+            height: 5vh;
+            width: 5vw;
+            background-color: #16a085;
+            color: white;
+
+
+        }
+
+        .modal-content button:hover {
+            background-color: #20dab4;;
+        }
+
+        .button_cls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .content h1{
+            text-align: center;
+        }
+        .messages-parent{
+            display: flex;
+            flex-direction: column;
+            background-color: #444;
+            height: 70vh;
+            width: 50vw;
+
+            padding: 20px;
+
+            position: absolute;
+            left: 25%;
+
+            gap: 10px;
+
+            overflow-y: auto;
+        }
+        .same-user{
+            text-align: end;
+            padding-right:20px ;
+            padding-left: 20px;
+            background-color: springgreen;
+            height: auto;
+            border-radius: 8px;
+            word-wrap: break-word; 
+            max-width: auto;
+            align-self: flex-end;
+            overflow-wrap: break-word;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .different-user{
+            padding-left: 20px;
+            padding-right: 20px;
+            background-color: red;  
+            text-align: start; 
+            height: auto;
+            border-radius: 8px;
+            max-width: auto;
+            overflow-wrap: break-word;
+            align-self: flex-start; 
+            word-wrap: break-word; 
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>{{group_name}}</h1>
+        <h3></h3>
+
+        <nav>
+            <a href="/home">Home</a>
+            <a href="/signout">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- For Showing Uploaded Posts -->
+        <div class="content">
+            <section id="all-posts">
+                <h1>All Posts</h1>
+                <div class="messages-parent" id="chat-container"> 
+                    {% for post in chat_messages reversed %}
+
+                        {% if post.author == user %}
+                            <div class="same-user" id="same-user">
+                                <h2>{{post.author.username}}</h2>
+                                <p>{{post.body}}</p>
+                            </div>
+                        {% else %}
+                            <div class="different-user">
+                                <h2>{{post.author.username}}</h2>
+                                <p>{{post.body}}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <form action="/group_chat/{{group_name}}/" id="msg-form" method="POST">
+            {% csrf_token %}
+            {{form}}
+
+            <button type="submit" id="chat-submit" class="btn btn-primary">
+                Send
+            </button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 PulseLink | All Rights Reserved</p>
+    </footer>
+
+    <script>
+        const socketURL = `ws://${window.location.host}/ws/group_chat/{{group_name}}/`;
+
+        console.log("Establishing socket connection");
+        const socket = new WebSocket(socketURL);
+
+        const message_form = document.getElementById("msg-form")
+        message_form.addEventListener("submit", function (event){
+            event.preventDefault()
+
+            let messeage_sent = document.getElementById("chat-body").value;
+            const dataToSend = {
+                message: messeage_sent,
+                group_name: "{{ group_name }}",
+                sender: "{{ username }}"
+            };
+            console.log("Data to send via WebSocket:", dataToSend);
+            socket.send(JSON.stringify(dataToSend));
+        })
+
+        const chat_cont = document.getElementById("chat-container");
+
+
+        const scrollToBottom = () =>{
+            chat_cont.scrollTop = chat_cont.scrollHeight
+        } 
+
+        socket.addEventListener("message", (e)=>{
+            const data = JSON.parse(e.data)
+            console.log(data)
+            let sender = data["author"]
+            let content = data["message"]
+
+            if(sender=="{{username}}"){
+                chat_cont.innerHTML += `<div class="same-user" id="same-user">
+                                <h2>${sender}</h2>
+                                <p>${content}</p>
+                            </div>`;
+            }
+            else{
+                chat_cont.innerHTML += `<div class="different-user" id="same-user">
+                    <h2>${sender}</h2>
+                    <p>${content}</p>
+                </div>`;
+            }
+            scrollToBottom();
+        })
+    </script>
+
+</body>
+
+</html>
